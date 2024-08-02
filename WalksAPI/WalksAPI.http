@@ -1,0 +1,6 @@
+@WalksAPI_HostAddress = http://localhost:5222
+
+GET {{WalksAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
