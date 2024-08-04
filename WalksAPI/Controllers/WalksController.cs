@@ -20,10 +20,13 @@ namespace WalksAPI.Controllers
             _walkRepository = walkRepository;
             _mapper = mapper;
         }
+        //get walks
+        //get:api/walks?filterOn=name&filterQuery=track
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] String? filterOn , [FromQuery] string? filterQuery,
+            [FromQuery]  string? sortBy , [FromQuery] bool ? isAscending , [FromQuery] int pageNumber = 1, int pageSize = 1000)
         {
-            var walks = await _walkRepository.GetAllAsync();
+            var walks = await _walkRepository.GetAllAsync(filterOn, filterQuery,sortBy, isAscending??true,pageNumber, pageSize);
             return Ok(_mapper.Map<List<WalkDto>>(walks));
         }
         [HttpGet]
@@ -60,7 +63,6 @@ namespace WalksAPI.Controllers
                 walkDomainModel = await _walkRepository.UpdateAsync(id, walkDomainModel);
 
                 return Ok(_mapper.Map<WalkDto>(walkDomainModel));
-         
         }
 
         [HttpDelete]
