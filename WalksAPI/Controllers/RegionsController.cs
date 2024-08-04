@@ -45,19 +45,35 @@ namespace WalksAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] AddRegionRequestDto addRegionRequestDto)
-        {          
-            var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
-            regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);          
-            var regionDto=_mapper.Map<RegionDto>(regionDomainModel);
-            return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+        {
+            if (ModelState.IsValid)
+            {
+                var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
+                regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
+                var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
+                return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+    
         }
         [HttpPut]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, AddRegionRequestDto updateRegionRequestDto)
-        {          
-            var regionsDomainModel= _mapper.Map<Region>(updateRegionRequestDto);
-            regionsDomainModel = await _regionRepository.UpdateAsync(id, regionsDomainModel);
-            return Ok(_mapper.Map<RegionDto>(regionsDomainModel));
+        {   
+            if (ModelState.IsValid)
+            {
+                var regionsDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
+                regionsDomainModel = await _regionRepository.UpdateAsync(id, regionsDomainModel);
+                return Ok(_mapper.Map<RegionDto>(regionsDomainModel));
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
         }
 
         [HttpDelete]

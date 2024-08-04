@@ -6,7 +6,7 @@ using WalksAPI.Models.DTO;
 using WalksAPI.Repositories;
 
 namespace WalksAPI.Controllers
-{  
+{
     //localhost:hostname/api/walks
     [Route("api/[controller]")]
     [ApiController]
@@ -14,9 +14,9 @@ namespace WalksAPI.Controllers
     {
         private readonly IWalkRepository _walkRepository;
         private readonly IMapper _mapper;
-        public WalksController(IWalkRepository walkRepository,IMapper mapper )
+        public WalksController(IWalkRepository walkRepository, IMapper mapper)
         {
-            _walkRepository= walkRepository;
+            _walkRepository = walkRepository;
             _mapper = mapper;
         }
         [HttpGet]
@@ -38,23 +38,37 @@ namespace WalksAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] AddWalkRequestDto addWalkRequestDto)
         {
-            var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
-            walkDomainModel = await _walkRepository.CreateAsync(walkDomainModel);
-            var walkDto = _mapper.Map<WalkDto>(walkDomainModel);
-            return CreatedAtAction(nameof(GetById), new { id = walkDto.Id }, walkDto);
+            if (ModelState.IsValid)
+            {
+                var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
+                walkDomainModel = await _walkRepository.CreateAsync(walkDomainModel);
+                var walkDto = _mapper.Map<WalkDto>(walkDomainModel);
+                return CreatedAtAction(nameof(GetById), new { id = walkDto.Id }, walkDto);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpPut]
         [Route("{id:guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] AddWalkRequestDto addWalkRequestDto)
         {
-            var Walk = await _walkRepository.GetByIdAsync(id);
-            if (Walk == null)
-                return NotFound();
-            var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
-            walkDomainModel = await _walkRepository.UpdateAsync(id,walkDomainModel);
+            if (ModelState.IsValid)
+            {
+                var Walk = await _walkRepository.GetByIdAsync(id);
+                if (Walk == null)
+                    return NotFound();
+                var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
+                walkDomainModel = await _walkRepository.UpdateAsync(id, walkDomainModel);
 
-            return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+                return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpDelete]
@@ -64,8 +78,8 @@ namespace WalksAPI.Controllers
             var Walk = await _walkRepository.GetByIdAsync(id);
             if (Walk == null)
                 return NotFound();
-           var walkDomainModel = await _walkRepository.DeleteAsync(id);
-           return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+            var walkDomainModel = await _walkRepository.DeleteAsync(id);
+            return Ok(_mapper.Map<WalkDto>(walkDomainModel));
         }
     }
 }
