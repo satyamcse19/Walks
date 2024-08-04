@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Globalization;
+using WalksAPI.CustomActionFilters;
 using WalksAPI.Data;
 using WalksAPI.Interfaces.Repositories;
 using WalksAPI.Models.Domain;
@@ -44,35 +45,23 @@ namespace WalksAPI.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromForm] AddRegionRequestDto addRegionRequestDto)
         {
-            if (ModelState.IsValid)
-            {
                 var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
                 regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
                 var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
-                return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+                return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);           
     
         }
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] Guid id, AddRegionRequestDto updateRegionRequestDto)
         {   
-            if (ModelState.IsValid)
-            {
                 var regionsDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
                 regionsDomainModel = await _regionRepository.UpdateAsync(id, regionsDomainModel);
                 return Ok(_mapper.Map<RegionDto>(regionsDomainModel));
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
 
         }
 
