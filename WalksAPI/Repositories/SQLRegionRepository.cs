@@ -16,7 +16,7 @@ namespace WalksAPI.Repositories
 
         public async Task<List<Region>> GetAllAsync()
         {
-            return await _dbcontext.Regions.ToListAsync(); ;
+            return await _dbcontext.Regions.ToListAsync();
         }
 
         public async Task<Region> GetByIdAsync(Guid id)

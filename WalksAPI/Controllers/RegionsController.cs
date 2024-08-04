@@ -16,13 +16,11 @@ namespace WalksAPI.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly WalkDbContext _dbcontext;
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
 
         public RegionsController(WalkDbContext dbContext, IRegionRepository RegionRepository ,IMapper mapper)
         {
-            this._dbcontext = dbContext;
             this._regionRepository = RegionRepository;
             this._mapper = mapper;
         }

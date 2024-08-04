@@ -23,6 +23,7 @@ namespace WalksAPI
 
             builder.Services.AddDbContext<WalkDbContext>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("WalksConnectionStrings")));
             builder.Services.AddScoped<IRegionRepository,SQLRegionRepository>();
+            builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
             builder.Services.AddAutoMapper(typeof(AutomapperProfiles));
 
 
