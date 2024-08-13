@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace WalksAPI.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles ="Reader")]
         public async Task<IActionResult> GetAll()
         {  
             var Regions = await _regionRepository.GetAllAsync();
@@ -36,6 +38,7 @@ namespace WalksAPI.Controllers
         //localhost:hostnumber/api/Regions/{id}
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var Region = await _regionRepository.GetByIdAsync(id);
@@ -46,6 +49,7 @@ namespace WalksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromForm] AddRegionRequestDto addRegionRequestDto)
         {
                 var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
@@ -57,6 +61,7 @@ namespace WalksAPI.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, AddRegionRequestDto updateRegionRequestDto)
         {   
                 var regionsDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
@@ -67,6 +72,7 @@ namespace WalksAPI.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var regionDomainModel = await _regionRepository.DeleteAsync(id);
