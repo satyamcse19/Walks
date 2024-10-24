@@ -12,8 +12,8 @@ using WalksAPI.Data;
 namespace WalksAPI.Migrations.WalkAuthDb
 {
     [DbContext(typeof(WalkAuthDbContext))]
-    [Migration("20240804162023_creating auth database")]
-    partial class creatingauthdatabase
+    [Migration("20241024053920_Create Auth Database")]
+    partial class CreateAuthDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

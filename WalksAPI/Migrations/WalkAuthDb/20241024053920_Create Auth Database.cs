@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WalksAPI.Migrations.WalkAuthDb
 {
     /// <inheritdoc />
-    public partial class creatingauthdatabase : Migration
+    public partial class CreateAuthDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

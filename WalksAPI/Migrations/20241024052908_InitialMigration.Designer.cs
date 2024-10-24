@@ -12,8 +12,8 @@ using WalksAPI.Data;
 namespace WalksAPI.Migrations
 {
     [DbContext(typeof(WalkDbContext))]
-    [Migration("20240804055233_add data for region and difficulty")]
-    partial class adddataforregionanddifficulty
+    [Migration("20241024052908_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
