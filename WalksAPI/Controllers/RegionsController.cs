@@ -21,7 +21,7 @@ namespace WalksAPI.Controllers
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
 
-        public RegionsController(WalkDbContext dbContext, IRegionRepository RegionRepository ,IMapper mapper)
+        public RegionsController(IRegionRepository RegionRepository ,IMapper mapper)
         {
             this._regionRepository = RegionRepository;
             this._mapper = mapper;

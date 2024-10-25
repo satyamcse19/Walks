@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -19,6 +20,7 @@ namespace WalksAPI
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
+            services.AddHttpContextAccessor();
 
             // Configure Swagger/OpenAPI
             services.AddEndpointsApiExplorer();
@@ -70,6 +72,7 @@ namespace WalksAPI
             services.AddScoped<IWalkRepository, SQLWalkRepository>();
             services.AddAutoMapper(typeof(AutomapperProfiles));
             services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IImageRepository, LocalImageRepository>();
 
             // Identity
             services.AddIdentityCore<IdentityUser>()
@@ -118,6 +121,13 @@ namespace WalksAPI
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "Image")),
+                RequestPath = "/Image"
+            });
+
 
         }
     }

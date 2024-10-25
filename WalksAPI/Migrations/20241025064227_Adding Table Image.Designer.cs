@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WalksAPI.Data;
 
@@ -11,9 +12,11 @@ using WalksAPI.Data;
 namespace WalksAPI.Migrations
 {
     [DbContext(typeof(WalkDbContext))]
-    partial class WalkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025064227_Adding Table Image")]
+    partial class AddingTableImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
