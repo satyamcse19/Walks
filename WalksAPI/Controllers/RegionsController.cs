@@ -27,12 +27,12 @@ namespace WalksAPI.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        [Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {  
             var Regions = await _regionRepository.GetAllAsync();
             //create new exception for check Global middleware loger working
-            throw new Exception("This is new exception");
+            //throw new Exception("This is new exception");
             return Ok(_mapper.Map<List<RegionDto>>(Regions));
         }
 

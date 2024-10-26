@@ -20,21 +20,10 @@ namespace WalksAPI
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
-        {
-            // Configure Serilog
+        {           
            var Logger = new LoggerConfiguration()
-                 .WriteTo.Console()
-                 .WriteTo.File("D:\\Logs\\log-.txt",rollingInterval:RollingInterval.Minute)
-                 .MinimumLevel.Information()
-                 .CreateLogger();
-            //var Logger = new LoggerConfiguration()
-            //    .WriteTo.Console()
-            //    .MinimumLevel.Warning()
-            //    .CreateLogger()
-            //     var Logger = new LoggerConfiguration()
-            //     .WriteTo.Console()
-            //     .MinimumLevel.Error()
-            //     .CreateLogger()
+          .ReadFrom.Configuration(configuration) //Serilog Initialization: The logger is created using ReadFrom.Configuration(configuration), which reads the settings from appsettings.json.
+          .CreateLogger();
 
             services.AddLogging(loggingBuilder =>
             {
