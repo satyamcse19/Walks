@@ -5,13 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Globalization;
-using System.Text.Json;
 using WalksAPI.CustomActionFilters;
 using WalksAPI.Data;
 using WalksAPI.Interfaces.Repositories;
 using WalksAPI.Models.Domain;
 using WalksAPI.Models.DTO;
-using Microsoft.Extensions.Logging;
 
 namespace WalksAPI.Controllers
 {
@@ -22,32 +20,20 @@ namespace WalksAPI.Controllers
     {
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<RegionsController> _logger;
 
-        public RegionsController(IRegionRepository RegionRepository ,IMapper mapper,ILogger<RegionsController> logger)
+        public RegionsController(IRegionRepository RegionRepository ,IMapper mapper)
         {
             this._regionRepository = RegionRepository;
             this._mapper = mapper;
-            this._logger = logger;
         }
         [HttpGet]
-        [Authorize(Roles = "Reader")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> GetAll()
-        {
-            try
-            {
-                _logger.LogInformation("get all coming");
-                var Regions = await _regionRepository.GetAllAsync();
-                _logger.LogInformation($"data coming {JsonSerializer.Serialize(_mapper.Map<List<RegionDto>>(Regions))}");
-                return Ok(_mapper.Map<List<RegionDto>>(Regions));
-            }
-            catch (Exception ex)
-            {
-
-                _logger.LogError(ex,ex.Message);
-                return StatusCode(500, "Internal server error");
-            }
-           
+        {  
+            var Regions = await _regionRepository.GetAllAsync();
+            //create new exception for check Global middleware loger working
+            throw new Exception("This is new exception");
+            return Ok(_mapper.Map<List<RegionDto>>(Regions));
         }
 
         //get single region (get region by id )

@@ -12,6 +12,7 @@ using System.Text;
 using WalksAPI.Data;
 using WalksAPI.Interfaces.Repositories;
 using WalksAPI.Mapping;
+using WalksAPI.Middlewares;
 using WalksAPI.Repositories;
 
 namespace WalksAPI
@@ -23,6 +24,7 @@ namespace WalksAPI
             // Configure Serilog
            var Logger = new LoggerConfiguration()
                  .WriteTo.Console()
+                 .WriteTo.File("D:\\Logs\\log-.txt",rollingInterval:RollingInterval.Minute)
                  .MinimumLevel.Information()
                  .CreateLogger();
             //var Logger = new LoggerConfiguration()
@@ -137,7 +139,8 @@ namespace WalksAPI
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Walks API V1");
                 });
             }
-
+            // Register the custom middleware
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
