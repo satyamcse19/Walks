@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -20,8 +21,6 @@ namespace WalksAPI
     {
         public static void Main(string[] args)
         {
-
-
             var builder = WebApplication.CreateBuilder(args);
             var startup = new Startup();
             startup.ConfigureServices(builder.Services, builder.Configuration);

@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Collections.Generic;
 using System.Text;
 using WalksAPI.Data;
@@ -19,6 +20,27 @@ namespace WalksAPI
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            // Configure Serilog
+           var Logger = new LoggerConfiguration()
+                 .WriteTo.Console()
+                 .MinimumLevel.Information()
+                 .CreateLogger();
+            //var Logger = new LoggerConfiguration()
+            //    .WriteTo.Console()
+            //    .MinimumLevel.Warning()
+            //    .CreateLogger()
+            //     var Logger = new LoggerConfiguration()
+            //     .WriteTo.Console()
+            //     .MinimumLevel.Error()
+            //     .CreateLogger()
+
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders(); // Clear existing providers
+                loggingBuilder.AddSerilog(Logger); // Add Serilog
+            });
+
+
             services.AddControllers();
             services.AddHttpContextAccessor();
 
@@ -58,8 +80,6 @@ namespace WalksAPI
                     }
                 });
             });
-
-
             // Database context
             services.AddDbContext<WalkDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WalksConnectionStrings")));
