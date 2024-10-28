@@ -5,25 +5,36 @@ using WebApiVersioning.Models.Dto;
 
 namespace WebApiVersioning.Controllers
 {
-    //localhost:hostname/api/Regions
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [ApiController]
-    public class CountriesController : Controller
+    public class CountriesController : ControllerBase
     {
-        private readonly Icountry country;
+        private readonly Icountry _country;
         private readonly IMapper _mapper;
 
-        public CountriesController(Icountry icountry,IMapper mapper)
+        public CountriesController(Icountry country, IMapper mapper)
         {
-            this.country = icountry;
-            this._mapper = mapper;
+            _country = country;
+            _mapper = mapper;
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [MapToApiVersion("1.0")]
+        public async Task<IActionResult> GetV1()
         {
-            var countries = await country.GetCountriesAsync();
-            //map domain to dto
+            var countries = await _country.GetCountriesAsync();
             var countryDtos = _mapper.Map<List<CountrytDto>>(countries);
+            return Ok(countryDtos);
+        }
+
+        [HttpGet]
+        [MapToApiVersion("2.0")]
+        public async Task<IActionResult> GetV2()
+        {
+            var countries = await _country.GetCountriesAsync();
+            var countryDtos = _mapper.Map<List<CountrytDtov2>>(countries);
             return Ok(countryDtos);
         }
     }

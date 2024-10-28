@@ -1,4 +1,6 @@
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.OpenApi.Models;
 using WebApiVersioning.Interface;
 using WebApiVersioning.Mapping;
 using WebApiVersioning.Repositories;
@@ -11,34 +13,69 @@ namespace WebApiVersioning
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Configure API versioning
+            builder.Services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
+            // Configure versioned API explorer
+            builder.Services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
+            // Configure Swagger
+            builder.Services.AddSwaggerGen(c =>
+            {
+                // Additional Swagger configuration can go here
+            });
+
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
 
             // Repositories
             builder.Services.AddScoped<Icountry, CountryRepository>();
             builder.Services.AddAutoMapper(typeof(AutomapperProfiles));
+            builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             var app = builder.Build();
 
-            // Configure the HTTP reque\\\\\peline.
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                // Other middleware can be added here as needed
+            }
+
+            // Use HTTPS redirection
+            app.UseHttpsRedirection();
+
+            // Use authorization
+            app.UseAuthorization();
+
+            // Map controllers
+            app.MapControllers();
+
+            // Configure Swagger middleware
+            var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    }
+                });
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
+            // Run the application
             app.Run();
         }
     }
