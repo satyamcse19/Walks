@@ -27,7 +27,7 @@ namespace WalksAPI.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {  
             var Regions = await _regionRepository.GetAllAsync();
