@@ -25,6 +25,7 @@ namespace WalksAPI.Controllers
         //get walks
         //get:api/walks?filterOn=name&filterQuery=track
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll([FromQuery] String? filterOn , [FromQuery] string? filterQuery,
             [FromQuery]  string? sortBy , [FromQuery] bool ? isAscending , [FromQuery] int pageNumber = 1, int pageSize = 1000)
         {
@@ -33,6 +34,7 @@ namespace WalksAPI.Controllers
         }
         [HttpGet]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var Walk = await _walkRepository.GetByIdAsync(id);
@@ -43,6 +45,7 @@ namespace WalksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromForm] AddWalkRequestDto addWalkRequestDto)
         {
                 var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
@@ -55,6 +58,7 @@ namespace WalksAPI.Controllers
         [HttpPut]
         [Route("{id:guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] AddWalkRequestDto addWalkRequestDto)
         {
            
@@ -69,6 +73,7 @@ namespace WalksAPI.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var Walk = await _walkRepository.GetByIdAsync(id);
