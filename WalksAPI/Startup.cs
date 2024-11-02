@@ -30,11 +30,8 @@ namespace WalksAPI
                 loggingBuilder.ClearProviders(); // Clear existing providers
                 loggingBuilder.AddSerilog(Logger); // Add Serilog
             });
-
-
             services.AddControllers();
             services.AddHttpContextAccessor();
-
             // Configure Swagger/OpenAPI
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>

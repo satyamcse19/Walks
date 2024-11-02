@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalksAPI", "WalksAPI\WalksAPI.csproj", "{95B647C3-C069-4129-8272-2EF14D9185B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiVersioning", "WebApiVersioning\WebApiVersioning.csproj", "{7B3ADE68-4BFF-46FB-8625-EF7F7236E52D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiVersioning", "WebApiVersioning\WebApiVersioning.csproj", "{7B3ADE68-4BFF-46FB-8625-EF7F7236E52D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalksUI", "WalksUI\WalksUI.csproj", "{EBA7F5EE-F7AD-4587-98DF-02435A70657C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7B3ADE68-4BFF-46FB-8625-EF7F7236E52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B3ADE68-4BFF-46FB-8625-EF7F7236E52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B3ADE68-4BFF-46FB-8625-EF7F7236E52D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBA7F5EE-F7AD-4587-98DF-02435A70657C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBA7F5EE-F7AD-4587-98DF-02435A70657C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBA7F5EE-F7AD-4587-98DF-02435A70657C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA7F5EE-F7AD-4587-98DF-02435A70657C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

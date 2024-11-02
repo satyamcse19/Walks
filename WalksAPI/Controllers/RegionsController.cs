@@ -27,7 +27,7 @@ namespace WalksAPI.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {  
             var Regions = await _regionRepository.GetAllAsync();
@@ -40,19 +40,18 @@ namespace WalksAPI.Controllers
         //localhost:hostnumber/api/Regions/{id}
         [HttpGet]
         [Route("{id:Guid}")]
-        [Authorize(Roles = "Reader")]
-        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        //[Authorize(Roles = "Reader")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var Region = await _regionRepository.GetByIdAsync(id);
             if (Region == null)
                 return NotFound();
             return Ok(_mapper.Map<RegionDto>(Region));
         }
-
         [HttpPost]
         [ValidateModel]
-        [Authorize(Roles = "Writer")]
-        public async Task<IActionResult> Create([FromForm] AddRegionRequestDto addRegionRequestDto)
+        //[Authorize(Roles = "Writer")]
+        public async Task<IActionResult> Create(AddRegionRequestDto addRegionRequestDto)
         {
                 var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
                 regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
@@ -63,8 +62,8 @@ namespace WalksAPI.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
-        [Authorize(Roles = "Writer")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, AddRegionRequestDto updateRegionRequestDto)
+        //[Authorize(Roles = "Writer")]
+        public async Task<IActionResult> Update(Guid id, AddRegionRequestDto updateRegionRequestDto)
         {   
                 var regionsDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
                 regionsDomainModel = await _regionRepository.UpdateAsync(id, regionsDomainModel);
@@ -74,7 +73,7 @@ namespace WalksAPI.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
-        [Authorize(Roles = "Writer")]
+        //[Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var regionDomainModel = await _regionRepository.DeleteAsync(id);
